@@ -40,7 +40,6 @@ public class MongoDBase {
 	 * Static Method to obtain client within a synchronized pool. Two
 	 * singleton's controls have been implemented.
 	 * 
-	 * @author Nicolas Dupuis
 	 * @param uri
 	 *            String
 	 * @return MongoClient instance

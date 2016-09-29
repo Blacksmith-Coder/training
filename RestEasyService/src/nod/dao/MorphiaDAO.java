@@ -34,7 +34,6 @@ public class MorphiaDAO {
 	 * @param uri
 	 * @param databaseName
 	 * @return Datastore database connection or create if don't exist
-	 * @author Nicolas Dupuis
 	 */
 	public Datastore morphiaConnector(String uri, String databaseName) {
 		Morphia morphia = new Morphia();
@@ -50,7 +49,6 @@ public class MorphiaDAO {
 	 * 
 	 * @param prod
 	 * @param uri
-	 * @author Nicolas Dupuis
 	 */
 	public void addProduct(Product prod, String uri) {
 		String databaseName = "myNodBase";
