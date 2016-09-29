@@ -54,7 +54,6 @@ public class MorphiaDAO {
 		String databaseName = "myNodBase";
 		morphiaConnector(uri, databaseName).save(prod);
 		MORPHIA_LOG.info("Object saved within database");
-
 	}
 
 }
