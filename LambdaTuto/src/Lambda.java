@@ -1,7 +1,11 @@
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import javax.swing.JButton;
 
 import org.apache.log4j.Logger;
 
@@ -20,14 +24,14 @@ import org.apache.log4j.Logger;
  * @Since JDK 1.8.0_101
  *
  */
-public class Learn {
+public class Lambda {
 
 	/**
 	 * Logger log4j
 	 * 
 	 * @see resources/log4j.properties
 	 */
-	private static final Logger LOG = Logger.getLogger(Learn.class);
+	private static final Logger LOG = Logger.getLogger(Lambda.class);
 
 	private static ArrayList<String> list = new ArrayList<String>();
 
@@ -39,6 +43,7 @@ public class Learn {
 
 	public static void main(String[] args) {
 
+		
 		/*
 		 * Style traditionnel :
 		 */
@@ -46,11 +51,13 @@ public class Learn {
 			LOG.info(list.get(i));
 		}
 
+		
 		/*
 		 * Lamdbda : style fonctionnel :
 		 */
 		list.forEach(LOG::info);
 
+		
 		/*
 		 * Auparavant on utilisait les classes anonymes internes :
 		 */
@@ -62,6 +69,7 @@ public class Learn {
 		});
 		myThread.start();
 
+		
 		/*
 		 * De nos jours on peut faire du Lambda :
 		 */
@@ -70,12 +78,14 @@ public class Learn {
 		});
 		lambdaThread.start();
 
+		
 		/**
 		 * Lambda sans paramètre :
 		 */
 		Runnable monTraitement = () -> LOG.info("traitement");
 		monTraitement.run();
 
+		
 		/*
 		 * Lambda avec 1 paramètre : Bon, là l'exemple est trivial est inutile
 		 * cependant : 
@@ -86,6 +96,7 @@ public class Learn {
 		Consumer<String> logguer = (param) -> LOG.info(param);
 		logguer.accept("test");
 
+		
 		/*
 		 * Lambda 2 paramètres : Paramètres explicites et inférés ne peuvent
 		 * être mixés Le cast sera nécessairement avec un type primitif qui
@@ -94,6 +105,7 @@ public class Learn {
 		BiFunction<Integer, Integer, Long> additionner = (num1, num2) -> (long) num1 + num2;
 		LOG.info(additionner.apply(5, 4).toString());
 
+		
 		/*
 		 * Les traitements d'une expression lambda peuvent être mis dans un bloc
 		 * qui peut contenir plusieurs opérations.
@@ -104,24 +116,49 @@ public class Learn {
 		Function<Integer,Boolean> isPositif = valeur -> { return valeur >= 0; };
 		LOG.info(isPositif.apply(-5));
 		
+		
 		/*
 		 * L'accés au variables du contexte englobant est contraint par final explicite
 		 * ou implicite. 
-		 */
-//		int compteur = 0; 
-//		// compteur++; <- interdit on modifie la variable dans le contexte englobant.
-//		Consumer<Integer> count = () -> LOG.info(compteur);
-//		count.accept(compteur);
-		
-		/*
 		 * De même qu'en java standard il faut faire attention aux accés concurrents car 
 		 * il est possible de passer en paramètre un objet mutable comme int[].
 		 * Attention l'incrémentation d'un des entiers du tableau en solution de 
 		 * contournement est déconseillée. Utiliser AtomicXXX pour un compteur.
 		 */
-//		AtomicInteger compteurSafe = new AtomicInteger(0);
-//		compteurSafe.incrementAndGet();
+		JButton button = new JButton("Incrémenter");
+		//int compteur = 0; <- interdit on modifie la variable dans le contexte englobant !
+		//compteur++; <- même problèmatique !
+		// Solution propre :
+		AtomicInteger compteur = new AtomicInteger(0);
+		button.addActionListener(event -> compteur.incrementAndGet());
+
 		
+		/*
+		 * Egalement une expression lambda ne définit pas de nouvelle portée
+		 * l'exemple ci dessous ne compilera pas.
+		 * Dans le même esprit le mot clef this fera référence à l'instance courante dans
+		 * le contexte englobant ET dans l'expression lambda.
+		 */
+		
+		// String p1 = new String("chaine1");
+		// String p2 = new String("chaine2");
+		// Comparator<String> triParNom = (String p1, String p2) -> {
+ 		//	  return p2.compareTo(p1);
+		// };
+		 
+		
+		/*
+		 * Définition d'une variable qui à pour type 
+		 * une interface fonctionnelle.
+		 * L'instance qui implémente l'interface est donc un Objet.
+		 */
+		Runnable myRun = () -> {
+			LOG.info("run run");
+		};
+		
+		Object obj = myRun;
+		Runnable thread = (Runnable) obj;
+		thread.run();
 
 	}
 
