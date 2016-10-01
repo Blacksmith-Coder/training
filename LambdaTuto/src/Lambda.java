@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.swing.JButton;
 
@@ -159,7 +160,9 @@ public class Lambda {
 		Object obj = myRun;
 		Runnable thread = (Runnable) obj;
 		thread.run();
-
+		
+		
+		
 	}
 
 }
